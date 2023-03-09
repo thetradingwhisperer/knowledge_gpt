@@ -51,6 +51,7 @@ if uploaded_file is not None:
     except OpenAIError as e:
         st.error(e._message)
 
+
 query = st.text_area("Ask a question about the document", on_change=clear_submit)
 with st.expander("Advanced Options"):
     show_all_chunks = st.checkbox("Show all chunks retrieved from vector search")
@@ -74,22 +75,21 @@ if button or st.session_state.get("submit"):
         # Output Columns
         answer_col, sources_col = st.columns(2)
         sources = search_docs(index, query)
-
+        
         try:
             answer = get_answer(sources, query)
-            if not show_all_chunks:
-                # Get the sources for the answer
-                sources = get_sources(answer, sources)
 
             with answer_col:
                 st.markdown("#### Answer")
                 st.markdown(answer["output_text"].split("SOURCES: ")[0])
+                
 
             with sources_col:
                 st.markdown("#### Sources")
+                st.markdown(answer["output_text"].split("SOURCES: ")[-1].split(", ")[0])
                 for source in sources:
                     st.markdown(source.page_content)
-                    st.markdown(source.metadata["source"])
+                    st.markdown(source.metadata["document"])
                     st.markdown("---")
 
         except OpenAIError as e:
