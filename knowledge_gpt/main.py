@@ -4,14 +4,15 @@ from openai.error import OpenAIError
 from utils import (
     embed_docs,
     get_answer,
-    get_sources,
     parse_docx,
     parse_pdf,
     parse_txt,
+    parse_csv,
     search_docs,
     text_to_docs,
     wrap_text_in_html,
 )
+import pandas as pd
 
 
 def clear_submit():
@@ -25,7 +26,7 @@ sidebar()
 
 uploaded_file = st.file_uploader(
     "Upload a pdf, docx, or txt file",
-    type=["pdf", "docx", "txt"],
+    type=["pdf", "docx", "txt", "csv"],
     help="Scanned documents are not supported yet!",
     on_change=clear_submit,
     accept_multiple_files = True
@@ -34,13 +35,15 @@ uploaded_file = st.file_uploader(
 index = None
 docs = None
 if uploaded_file is not None:
-    if len(uploaded_file) > 1: # Must be removed for one file upload
+    if len(uploaded_file) >= 1: # Must be removed for one file upload
         if uploaded_file[0].name.endswith(".pdf"): 
             docs = [parse_pdf(doc_x) for doc_x in uploaded_file if doc_x.name.endswith(".pdf")]
         elif uploaded_file[0].name.endswith(".docx"): 
             docs = [parse_docx(doc_x) for doc_x in uploaded_file if doc_x.name.endswith(".docx")]
         elif uploaded_file[0].name.endswith(".txt"): 
             docs = [parse_txt(doc_x) for doc_x in uploaded_file if doc_x.name.endswith(".txt")]
+        elif uploaded_file[0].name.endswith(".csv"): 
+            docs = [parse_csv(doc_x) for doc_x in uploaded_file if doc_x.name.endswith(".csv")]
         else: raise ValueError("File type not supported!")   
         
     text = text_to_docs(docs)
