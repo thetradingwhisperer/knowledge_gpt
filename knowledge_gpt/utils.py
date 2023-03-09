@@ -38,7 +38,7 @@ def parse_pdf(file: BytesIO) -> List[str]:
         text = re.sub(r"\n\s*\n", "\n\n", text)
 
         output.append(text)
-
+    output = "/n".join(output)
     return output
 
 
@@ -48,7 +48,7 @@ def parse_txt(file: BytesIO) -> str:
     # Remove multiple newlines
     text = re.sub(r"\n\s*\n", "\n\n", text)
     return text
-
+ 
 
 @st.cache(allow_output_mutation=True)
 def text_to_docs(text: str | List[str]) -> List[Document]:
