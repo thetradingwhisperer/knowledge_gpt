@@ -144,3 +144,11 @@ def wrap_text_in_html(text: str | List[str]) -> str:
         # Add horizontal rules between pages
         text = "\n<hr/>\n".join(text)
     return "".join([f"<p>{line}</p>" for line in text.split("\n")])
+
+
+
+################################
+#  Haystack for extractive QA  #
+#################################
+
+

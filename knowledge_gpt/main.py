@@ -54,46 +54,55 @@ if uploaded_file is not None:
     except OpenAIError as e:
         st.error(e._message)
 
+# Add tabs for either generative QA or extractive QA
 
-query = st.text_area("Ask a question about the document", on_change=clear_submit)
-with st.expander("Advanced Options"):
-    show_all_chunks = st.checkbox("Show all chunks retrieved from vector search")
-    show_full_doc = st.checkbox("Show parsed contents of the document")
+tab1, tab2 = st.tabs(["Generative QA", "Extractive QA"])
 
-if show_full_doc and doc:
-    with st.expander("Document"):
-        # Hack to get around st.markdown rendering LaTeX
-        st.markdown(f"<p>{wrap_text_in_html(doc)}</p>", unsafe_allow_html=True)
+# Tab1 - Generative QA
+with tab1:
+    query = st.text_area("Ask a question about the document", on_change=clear_submit)
+    with st.expander("Advanced Options"):
+        show_all_chunks = st.checkbox("Show all chunks retrieved from vector search")
+        show_full_doc = st.checkbox("Show parsed contents of the document")
 
-button = st.button("Submit")
-if button or st.session_state.get("submit"):
-    if not st.session_state.get("api_key_configured"):
-        st.error("Please configure your OpenAI API key!")
-    elif not index:
-        st.error("Please upload a document!")
-    elif not query:
-        st.error("Please enter a question!")
-    else:
-        st.session_state["submit"] = True
-        # Output Columns
-        answer_col, sources_col = st.columns(2)
-        sources = search_docs(index, query)
-        
-        try:
-            answer = get_answer(sources, query)
+    if show_full_doc and doc:
+        with st.expander("Document"):
+            # Hack to get around st.markdown rendering LaTeX
+            st.markdown(f"<p>{wrap_text_in_html(doc)}</p>", unsafe_allow_html=True)
 
-            with answer_col:
-                st.markdown("#### Answer")
-                st.markdown(answer["output_text"].split("SOURCES: ")[0])
-                
+    button = st.button("Submit")
+    if button or st.session_state.get("submit"):
+        if not st.session_state.get("api_key_configured"):
+            st.error("Please configure your OpenAI API key!")
+        elif not index:
+            st.error("Please upload a document!")
+        elif not query:
+            st.error("Please enter a question!")
+        else:
+            st.session_state["submit"] = True
+            # Output Columns
+            answer_col, sources_col = st.columns(2)
+            sources = search_docs(index, query)
+            
+            try:
+                answer = get_answer(sources, query)
 
-            with sources_col:
-                st.markdown("#### Sources")
-                st.markdown(answer["output_text"].split("SOURCES: ")[-1].split(", ")[0])
-                for source in sources:
-                    st.markdown(source.page_content)
-                    st.markdown(source.metadata["document"])
-                    st.markdown("---")
+                with answer_col:
+                    st.markdown("#### Answer")
+                    st.markdown(answer["output_text"].split("SOURCES: ")[0])
+                    
 
-        except OpenAIError as e:
-            st.error(e._message)
+                with sources_col:
+                    st.markdown("#### Sources")
+                    st.markdown(answer["output_text"].split("SOURCES: ")[-1].split(", ")[0])
+                    for source in sources:
+                        st.markdown(source.page_content)
+                        st.markdown(source.metadata["document"])
+                        st.markdown("---")
+
+            except OpenAIError as e:
+                st.error(e._message)
+
+# Extractive QA
+with tab2:
+    st.write("work in progress")
