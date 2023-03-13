@@ -1,10 +1,12 @@
 import re
 from io import BytesIO
 from typing import Any, Dict, List
+import pandas as pd
 
 import docx2txt
 import streamlit as st
-from embeddings import OpenAIEmbeddings
+#from embeddings import OpenAIEmbeddings
+from langchain.embeddings import OpenAIEmbeddings
 from langchain.chains.qa_with_sources import load_qa_with_sources_chain
 from langchain.docstore.document import Document
 from langchain.llms import OpenAI
@@ -41,6 +43,13 @@ def parse_pdf(file: BytesIO) -> List[str]:
     output = "/n".join(output)
     return output
 
+@st.experimental_memo()
+def parse_csv(file: BytesIO) -> str:
+    text = pd.read_csv(file, sep=",", encoding='cp1252').to_string()
+    # Remove multiple newlines
+    text = re.sub(r"\n\s*\n", "\n\n", text)
+    return text
+
 
 @st.experimental_memo()
 def parse_txt(file: BytesIO) -> str:
@@ -57,30 +66,22 @@ def text_to_docs(text: str | List[str]) -> List[Document]:
     if isinstance(text, str):
         # Take a single string as one page
         text = [text]
-    page_docs = [Document(page_content=page) for page in text]
 
-    # Add page numbers as metadata
-    for i, doc in enumerate(page_docs):
-        doc.metadata["page"] = i + 1
-
-    # Split pages into chunks
-    doc_chunks = []
-
-    for doc in page_docs:
-        text_splitter = RecursiveCharacterTextSplitter(
+    text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=800,
             separators=["\n\n", "\n", ".", "!", "?", ",", " ", ""],
             chunk_overlap=0,
-        )
-        chunks = text_splitter.split_text(doc.page_content)
-        for i, chunk in enumerate(chunks):
-            doc = Document(
-                page_content=chunk, metadata={"page": doc.metadata["page"], "chunk": i}
-            )
-            # Add sources a metadata
-            doc.metadata["source"] = f"{doc.metadata['page']}-{doc.metadata['chunk']}"
-            doc_chunks.append(doc)
-    return doc_chunks
+    )
+    
+    # creating metadata for each document
+    metadatas = []
+    for i in range(len(text)):
+        metadatas.append({"document": i + 1, "source":i + 1})
+    
+    # create documents with splitted text in chunks
+    documents = text_splitter.create_documents(text, metadatas)
+    
+    return documents
 
 
 @st.cache(allow_output_mutation=True, show_spinner=False)
@@ -102,13 +103,14 @@ def embed_docs(docs: List[Document]) -> VectorStore:
         return index
 
 
+
 @st.cache(allow_output_mutation=True)
 def search_docs(index: VectorStore, query: str) -> List[Document]:
     """Searches a FAISS index for similar chunks to the query
     and returns a list of Documents."""
 
     # Search for similar chunks
-    docs = index.similarity_search(query, k=5)
+    docs = index.similarity_search(query, k=3)
     return docs
 
 
@@ -134,21 +136,6 @@ def get_answer(docs: List[Document], query: str) -> Dict[str, Any]:
         {"input_documents": docs, "question": query}, return_only_outputs=True
     )
     return answer
-
-
-@st.cache(allow_output_mutation=True)
-def get_sources(answer: Dict[str, Any], docs: List[Document]) -> List[Document]:
-    """Gets the source documents for an answer."""
-
-    # Get sources for the answer
-    source_keys = [s for s in answer["output_text"].split("SOURCES: ")[-1].split(", ")]
-
-    source_docs = []
-    for doc in docs:
-        if doc.metadata["source"] in source_keys:
-            source_docs.append(doc)
-
-    return source_docs
 
 
 def wrap_text_in_html(text: str | List[str]) -> str:
