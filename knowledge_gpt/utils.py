@@ -17,6 +17,8 @@ from openai.error import AuthenticationError
 from prompts import STUFF_PROMPT
 from pypdf import PdfReader
 
+from haystack.nodes import PreProcessor
+
 
 @st.experimental_memo()
 def parse_docx(file: BytesIO) -> str:

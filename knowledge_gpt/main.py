@@ -46,21 +46,26 @@ if uploaded_file is not None:
             docs = [parse_csv(doc_x) for doc_x in uploaded_file if doc_x.name.endswith(".csv")]
         else: raise ValueError("File type not supported!")   
         
-    text = text_to_docs(docs)
+text = text_to_docs(docs)
+
+
+# Add tabs for either generative QA or extractive QA
+tab1, tab2 = st.tabs(["Generative QA", "Extractive QA"])
+
+# Tab1 - Generative QA
+with tab1:
+    #Index documents
     try:
         with st.spinner("Indexing document... This may take a while⏳"):
             index = embed_docs(text)
         st.session_state["api_key_configured"] = True
     except OpenAIError as e:
         st.error(e._message)
-
-# Add tabs for either generative QA or extractive QA
-
-tab1, tab2 = st.tabs(["Generative QA", "Extractive QA"])
-
-# Tab1 - Generative QA
-with tab1:
-    query = st.text_area("Ask a question about the document", on_change=clear_submit)
+    
+    
+    # User inout as a question/query
+    query = st.text_area("Ask a question about the document", placeholder="Write your question",
+                         on_change=clear_submit)
     with st.expander("Advanced Options"):
         show_all_chunks = st.checkbox("Show all chunks retrieved from vector search")
         show_full_doc = st.checkbox("Show parsed contents of the document")
@@ -70,7 +75,7 @@ with tab1:
             # Hack to get around st.markdown rendering LaTeX
             st.markdown(f"<p>{wrap_text_in_html(doc)}</p>", unsafe_allow_html=True)
 
-    button = st.button("Submit")
+    button = st.button("Submit", key="bt_tab1")
     if button or st.session_state.get("submit"):
         if not st.session_state.get("api_key_configured"):
             st.error("Please configure your OpenAI API key!")
@@ -103,6 +108,13 @@ with tab1:
             except OpenAIError as e:
                 st.error(e._message)
 
-# Extractive QA
+# Tab2 - Extractive QA
 with tab2:
-    st.write("work in progress")
+    query2 = st.text_area("Ask a question about the document", placeholder="Enter a question",
+                          on_change=clear_submit)
+    
+    #Define the submit button
+    button2 = st.button("Submit", key="bt_tab2")
+    #if button2 or st.session_state.get("submit"):
+        
+    

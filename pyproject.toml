@@ -18,6 +18,8 @@ docx2txt = "^0.8"
 pillow = "^9.4.0"
 pypdf = "^3.3.0"
 tenacity = "^8.2.0"
+farm-haystack = { git = "https://github.com/deepset-ai/haystack.git"}
+transformers = "4.25.1"
 
 
 [tool.poetry.group.dev.dependencies]
