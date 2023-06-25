@@ -19,8 +19,8 @@ def clear_submit():
     st.session_state["submit"] = False
 
 
-st.set_page_config(page_title="KnowledgeGPT", page_icon="📖", layout="wide")
-st.header("📖KnowledgeGPT")
+st.set_page_config(page_title="Document Search and Question Answering App", page_icon="📖", layout="wide")
+st.header("📖 NOCGPT")
 
 sidebar()
 
@@ -68,7 +68,7 @@ if show_full_doc and doc:
 button = st.button("Submit")
 if button or st.session_state.get("submit"):
     if not st.session_state.get("api_key_configured"):
-        st.error("Please configure your OpenAI API key!")
+        st.error("Please configure your pass!")
     elif not index:
         st.error("Please upload a document!")
     elif not query:

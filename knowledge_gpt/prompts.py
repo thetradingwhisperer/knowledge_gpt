@@ -2,21 +2,21 @@
 from langchain.prompts import PromptTemplate
 
 ## Use a shorter template to reduce the number of tokens in the prompt
-template = """Create a final answer to the given questions using the provided document excerpts(in no particular order) as references. ALWAYS include a "SOURCES" section in your answer including only the minimal set of sources needed to answer the question. If you are unable to answer the question, simply state that you do not know. Do not attempt to fabricate an answer and leave the SOURCES section empty.
+template = """Create a final answer to the given questions using the provided document excerpts(in no particular order) as references. ALWAYS include a "SOURCES" section in your answer including only the minimal set of sources needed to answer the question. if you are unsure about the answer, give your best guest given the document provided as reference.
 
 ---------
 
-QUESTION: What  is the purpose of ARPA-H?
+QUESTION: When was the well spudded?
 =========
-Content: More support for patients and families. \n\nTo get there, I call on Congress to fund ARPA-H, the Advanced Research Projects Agency for Health. \n\nIt’s based on DARPA—the Defense Department project that led to the Internet, GPS, and so much more.  \n\nARPA-H will have a singular purpose—to drive breakthroughs in cancer, Alzheimer’s, diabetes, and more.
+Content: The well was cleaned up between 23:45 hrs on 29 Se ptember and 09:40 hrs on 30 September. The well was then opened at 10:35 hrs on 30 September and beaned up to a 1” choke. The well flowed on this choke setting until it was shut in at 14:00 hrs on 2 October. 
 Document: 1
-Content: While we’re at it, let’s make sure every American can get the health care they need. \n\nWe’ve already made historic investments in health care. \n\nWe’ve made it easier for Americans to get the care they need, when they need it. \n\nWe’ve made it easier for Americans to get the treatments they need, when they need them. \n\nWe’ve made it easier for Americans to get the medications they need, when they need them.
+Content: Total Depth, 13,941 ft MDRT : 2,940,541.28 m N (UTM) 3,037 ft TVDRT 596,211.72 m E RT Elevation : 102 ft amsl. Water Depth : 205 ft bmsl. Well Status : Injecting/n2I.2 Drilling Operations I.2.1 Summary of Drilling Operations The derrick was skidded from slot AA-11 to AA-09. A 23" motor BHA was made up and the well was spudded at 13:30 hours on August 4, 1996. The 23" hole was drilled from the seabed at 307 ft to 977 ft, sweeping with 50 bbl HI-VIS pills and running Magnetic Single Shot gyro for every stand.
 Document: 2
-Content: The V.A. is pioneering new ways of linking toxic exposures to disease, already helping  veterans get the care they deserve. \n\nWe need to extend that same care to all Americans. \n\nThat’s why I’m calling on Congress to pass legislation that would establish a national registry of toxic exposures, and provide health care and financial assistance to those affected.
+Content: The string was pulled and a more 'aggressive' building assembly was run in hole. However, it was still not possible to build angle. A 62 bbl cement plug was sputted at 9864 ft but it was not possible to kick of on it. A 65 bbl plug was set at 8924 ft and the well was kicked off at 8450 ft. The well was drilled to 10911 ft where the Upper Nahr Umr Shale was encountered without being able to get it back down.
 Document: 3
 =========
-FINAL ANSWER: The purpose of ARPA-H is to drive breakthroughs in cancer, Alzheimer’s, diabetes, and more.
-Document: 1
+FINAL ANSWER: The well was spudded at 13:30 hours on August 4, 1996.
+Document: 2
 
 ---------
 

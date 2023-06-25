@@ -9,15 +9,13 @@ def sidebar():
     with st.sidebar:
         st.markdown(
             "## How to use\n"
-            "1. Enter your [OpenAI API key](https://platform.openai.com/account/api-keys) below🔑\n"  # noqa: E501
-            "2. Upload a pdf, docx, or txt file📄\n"
-            "3. Ask a question about the document💬\n"
+            "1. Upload a pdf, docx, or txt file📄\n"
+            "2. Ask a question about the document💬\n"
         )
         api_key_input = st.text_input(
-            "OpenAI API Key",
+            "pass",
             type="password",
-            placeholder="Paste your OpenAI API key here (sk-...)",
-            help="You can get your API key from https://platform.openai.com/account/api-keys.",  # noqa: E501
+            placeholder="",
             value=st.session_state.get("OPENAI_API_KEY", ""),
         )
 
@@ -27,12 +25,11 @@ def sidebar():
         st.markdown("---")
         st.markdown("# About")
         st.markdown(
-            "📖KnowledgeGPT allows you to ask questions about your "
-            "documents and get accurate answers with instant citations. "
+            "This app uses large language models which allows you to ask questions about your "
+            "documents and get decent answers with instant citations. "
         )
         st.markdown(
             "This tool is a work in progress. "
-            "You can contribute to the project on [GitHub](https://github.com/mmz-001/knowledge_gpt) "  # noqa: E501
             "with your feedback and suggestions💡"
         )
         st.markdown("---")
