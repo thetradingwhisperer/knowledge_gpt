@@ -37,7 +37,8 @@ docs = None
 if uploaded_file is not None:
     if len(uploaded_file) >= 1: # Must be removed for one file upload
         if uploaded_file[0].name.endswith(".pdf"): 
-            docs = [parse_pdf(doc_x) for doc_x in uploaded_file if doc_x.name.endswith(".pdf")]
+            docs = [parse_pdf(doc) for doc in uploaded_file if doc.name.endswith(".pdf")]
+            doc_name = [doc.name for doc in uploaded_file if doc.name.endswith(".pdf")]
         elif uploaded_file[0].name.endswith(".docx"): 
             docs = [parse_docx(doc_x) for doc_x in uploaded_file if doc_x.name.endswith(".docx")]
         elif uploaded_file[0].name.endswith(".txt"): 
@@ -46,7 +47,7 @@ if uploaded_file is not None:
             docs = [parse_csv(doc_x) for doc_x in uploaded_file if doc_x.name.endswith(".csv")]
         else: raise ValueError("File type not supported!")   
         
-    text = text_to_docs(docs)
+    text = text_to_docs(docs, doc_name)
     try:
         with st.spinner("Indexing document... This may take a while⏳"):
             index = embed_docs(text)

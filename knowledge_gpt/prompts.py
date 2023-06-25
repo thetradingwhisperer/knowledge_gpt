@@ -9,14 +9,14 @@ template = """Create a final answer to the given questions using the provided do
 QUESTION: When was the well spudded?
 =========
 Content: The well was cleaned up between 23:45 hrs on 29 Se ptember and 09:40 hrs on 30 September. The well was then opened at 10:35 hrs on 30 September and beaned up to a 1” choke. The well flowed on this choke setting until it was shut in at 14:00 hrs on 2 October. 
-Document: 1
+source: well_report.pdf
 Content: Total Depth, 13,941 ft MDRT : 2,940,541.28 m N (UTM) 3,037 ft TVDRT 596,211.72 m E RT Elevation : 102 ft amsl. Water Depth : 205 ft bmsl. Well Status : Injecting/n2I.2 Drilling Operations I.2.1 Summary of Drilling Operations The derrick was skidded from slot AA-11 to AA-09. A 23" motor BHA was made up and the well was spudded at 13:30 hours on August 4, 1996. The 23" hole was drilled from the seabed at 307 ft to 977 ft, sweeping with 50 bbl HI-VIS pills and running Magnetic Single Shot gyro for every stand.
-Document: 2
+Document: end_of_well.pdf
 Content: The string was pulled and a more 'aggressive' building assembly was run in hole. However, it was still not possible to build angle. A 62 bbl cement plug was sputted at 9864 ft but it was not possible to kick of on it. A 65 bbl plug was set at 8924 ft and the well was kicked off at 8450 ft. The well was drilled to 10911 ft where the Upper Nahr Umr Shale was encountered without being able to get it back down.
-Document: 3
+Document: new_operation.pdf
 =========
 FINAL ANSWER: The well was spudded at 13:30 hours on August 4, 1996.
-Document: 2
+Document: well_report.pdf
 
 ---------
 

@@ -60,7 +60,7 @@ def parse_txt(file: BytesIO) -> str:
  
 
 @st.cache(allow_output_mutation=True)
-def text_to_docs(text: str | List[str]) -> List[Document]:
+def text_to_docs(text: str | List[str], doc_name: List[str]) -> List[Document]:
     """Converts a string or list of strings to a list of Documents
     with metadata."""
     if isinstance(text, str):
@@ -75,8 +75,8 @@ def text_to_docs(text: str | List[str]) -> List[Document]:
     
     # creating metadata for each document
     metadatas = []
-    for i in range(len(text)):
-        metadatas.append({"document": i + 1, "source":i + 1})
+    for i, name in enumerate(doc_name):
+        metadatas.append({"document": i + 1, "source":name})
     
     # create documents with splitted text in chunks
     documents = text_splitter.create_documents(text, metadatas)
