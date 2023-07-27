@@ -2,7 +2,7 @@
 from langchain.prompts import PromptTemplate
 
 ## Use a shorter template to reduce the number of tokens in the prompt
-template = """Create a final answer to the given questions using the provided document excerpts(in no particular order) as references. ALWAYS include a "SOURCES" section in your answer including only the minimal set of sources needed to answer the question. if you are unsure about the answer, give your best guest given the document provided as reference.
+template_QA = """Create a final answer to the given questions using the provided document excerpts(in no particular order) as references. ALWAYS include a "SOURCES" section in your answer including only the minimal set of sources needed to answer the question. if you are unsure about the answer, give your best guest given the document provided as reference.
 
 ---------
 
@@ -26,6 +26,32 @@ QUESTION: {question}
 =========
 FINAL ANSWER:"""
 
+## Use a shorter template to reduce the number of tokens in the prompt
+template_AQA = """Create a final answer to the given user question using the provided document excerpts(in no particular order) as references. ALWAYS include a "SOURCES" section in your answer including only the minimal set of sources needed to answer the question. if you are unsure about the answer, give your best guest given the document provided as reference.
+
+---------
+
+QUESTION: Fill in the a table with info for wellA and wellB. Info: spud or drilling start date, Reservoir name, logging tools?
+=========
+Content: The well was drilled on 30 September 2021. the TD was in the reservoir Madud, with the pressure log data taken from RFT. The well flowed on this choke setting until it was shut in at 14:00 hrs on 2 October. 
+source: well_report_wellA.pdf
+Content: Total Depth, 13,941 ft MDRT : 2,940,541.28 m N (UTM) 3,037 ft TVDRT 596,211.72 m E RT Elevation : 102 ft amsl. The well started on 12 January 2001. the TD was in the reservoir Namh, with the pressure log data taken from RFT. The well flowed on this choke setting until it was shut in on March 5. 
+Document: well_report_wellB.pdf
+Content: The string was pulled and a more 'aggressive' building assembly was run in hole. However, it was still not possible to build angle. A 62 bbl cement plug was sputted at 9864 ft but it was not possible to kick of on it. A 65 bbl plug was set at 8924 ft and the well was kicked off at 8450 ft. The well was drilled to 10911 ft where the Upper Nahr Umr Shale was encountered without being able to get it back down.
+Document: new_operation.pdf
+=========
+FINAL ANSWER: WellA, Drilled date - 30 September 2021, Reservoir - Madud , logging tools - RFT, Source - well_report_wellA.pdf
+              WellB, Drilled date - 12 January 2001, Reservoir - Namh, logging tools - RFT, Source - well_report_wellB.pdf
+
+---------
+
+QUESTION: {question}
+=========
+{summaries}
+=========
+FINAL ANSWER:"""
+
+
 STUFF_PROMPT = PromptTemplate(
-    template=template, input_variables=["summaries", "question"]
+    template=template_AQA, input_variables=["summaries", "question"]
 )

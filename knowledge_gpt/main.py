@@ -12,6 +12,7 @@ from utils import (
     text_to_docs,
     wrap_text_in_html,
 )
+from io import StringIO
 import pandas as pd
 
 
@@ -20,7 +21,7 @@ def clear_submit():
 
 
 st.set_page_config(page_title="Document Search and Question Answering App", page_icon="📖", layout="wide")
-st.header("📖 NOCGPT")
+st.header("📖 AskNOCGPT")
 
 sidebar()
 
@@ -85,6 +86,8 @@ if button or st.session_state.get("submit"):
 
             with answer_col:
                 st.markdown("#### Answer")
+                #Print output as streamlit DataFrame
+                st.dataframe(pd.DataFrame([ x.split(',') for x in answer["output_text"].split("SOURCES: ")[0].split('\n')]))
                 st.markdown(answer["output_text"].split("SOURCES: ")[0])
                 
 
