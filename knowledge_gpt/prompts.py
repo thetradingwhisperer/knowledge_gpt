@@ -40,9 +40,9 @@ Document: well_report_wellB.pdf
 Content: The string was pulled and a more 'aggressive' building assembly was run in hole. However, it was still not possible to build angle. A 62 bbl cement plug was sputted at 9864 ft but it was not possible to kick of on it. A 65 bbl plug was set at 8924 ft and the well was kicked off at 8450 ft. The well was drilled to 10911 ft where the Upper Nahr Umr Shale was encountered without being able to get it back down.
 Document: new_operation.pdf
 =========
-FINAL ANSWER: WellA, Drilled date - 30 September 2021, Reservoir - Madud , logging tools - RFT, Source - well_report_wellA.pdf
-              WellB, Drilled date - 12 January 2001, Reservoir - Namh, logging tools - RFT, Source - well_report_wellB.pdf
-
+FINAL ANSWER: Wellname, Drilled date, Reservoir, logging tools, Source
+WellA, 30 September 2021, Madud , RFT, well_report_wellA.pdf
+WellB, 12 January 2001, Namh, RFT, well_report_wellB.pdf
 ---------
 
 QUESTION: {question}

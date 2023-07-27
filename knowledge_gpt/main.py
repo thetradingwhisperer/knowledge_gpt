@@ -87,7 +87,9 @@ if button or st.session_state.get("submit"):
             with answer_col:
                 st.markdown("#### Answer")
                 #Print output as streamlit DataFrame
-                st.dataframe(pd.DataFrame([ x.split(',') for x in answer["output_text"].split("SOURCES: ")[0].split('\n')]))
+                ansdf = pd.DataFrame([ x.split(',') for x in answer["output_text"].split("SOURCES: ")[0].split('\n')]) 
+                ansdf.columns = ansdf.iloc[0]
+                st.dataframe(ansdf[1:5], width=1000, height=100)
                 st.markdown(answer["output_text"].split("SOURCES: ")[0])
                 
 
